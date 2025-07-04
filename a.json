@@ -1,9 +1,0 @@
-{
-    "Piano":"./audio/piano01.wav",
-    "WindsongLyre":"./audio/windsonelyre.wav",
-    "VintageLyre":"./audio/VintageLyre.wav",
-    "FloralZither":"./audio/floralzither.wav",
-    "NightwindHorn":"./audio/nightwindhorn.wav",
-    "LingeringEuphonia":"./audio/lingeringeuphonia.wav",
-    "Ukulele":"./audio/ukulele.wav"
-}
