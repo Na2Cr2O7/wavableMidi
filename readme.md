@@ -61,7 +61,7 @@ options:
   -N, --NoCache         disable cache | 禁用缓存到RAM功能
   -C, --anotherway      another way(wavCompositor) to process the audio (-N will be enabled while -s will be 44100
                         forever) | 使用另一种音频处理方式(wavCompositor)（启用此选项会自动禁用缓存，并固定采样率为 44100）
-
+```
 ---
 
 ## 🧪 示例命令
