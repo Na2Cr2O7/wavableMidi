@@ -1,4 +1,6 @@
 
+![a](F.png)
+
 # 🎵 wavableMidi
 
 将 MIDI 文件转换为 WAV 音频文件。
@@ -99,9 +101,12 @@ changePitch = changePitch3  # 默认使用 changePitch3
 
 欢迎提交 Issue 和 Pull Request 来帮助改进此项目！
 ### midi文件出处
-thomas.mid来自网络
+thomas.mid来自网络。
+
+
 [Memory Lane-Tobu.mid](<Memory Lane-Tobu.mid>) 是Tobu的歌曲Memory Lane加速1.1倍后用Melodyne 5生成。
 
 AudioFile.h 来自 [https://github.com/adamstark/AudioFile](https://github.com/adamstark/AudioFile) 在MIT许可证下授权。
+
 (虽然没有用到)CwriteWav.c 来自 [https://github.com/lyc18/C-CPP-read-write-WAV](https://github.com/lyc18/C-CPP-read-write-WAV) 在MIT许可证下授权。
 
