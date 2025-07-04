@@ -61,8 +61,8 @@ options:
   -N, --NoCache         disable cache | 禁用缓存到RAM功能
   -C, --anotherway      another way(wavCompositor) to process the audio (-N will be enabled while -s will be 44100
                         forever) | 使用另一种音频处理方式(wavCompositor)（启用此选项会自动禁用缓存，并固定采样率为 44100）
+
 ```
----
 
 ## 🧪 示例命令
 
@@ -100,7 +100,12 @@ changePitch = changePitch3  # 默认使用 changePitch3
 ## 🤝 贡献与反馈
 
 欢迎提交 Issue 和 Pull Request 来帮助改进此项目！
+
+
+Piano01.wav 来自 [LMMS](https://github.com/LMMS/lmms)的piano01.ogg。
+
 ### midi文件出处
+
 thomas.mid来自网络。
 
 
