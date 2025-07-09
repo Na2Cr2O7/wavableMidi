@@ -152,7 +152,10 @@ int main(int argc, char* argv[])
 
 
     // combine audio files into one audio file
-    float* buffer = new float[bufferSize];
+    //float* buffer = new float[bufferSize];
+    float * buffer[2] = {new float[bufferSize],new float[bufferSize]};
+    memset(buffer[0], 0, bufferSize*sizeof(float));
+    memset(buffer[1], 0, bufferSize*sizeof(float));
     // memset(buffer, 0, bufferSize*sizeof(float));
     // CWW::WAVData* wavData = CWW::audioread(audioFiles[0].fileName);
     // free(wavData->sample); //use its Header only
@@ -167,41 +170,54 @@ int main(int argc, char* argv[])
         int startSample = (int)(audioFile.startTime * SAMPLE_RATE);
         float volume = audioFile.volume;
         // std::cout << "startSample: " << startSample << std::endl;
+        if (audio.isStereo())
+        {
+            std::printf("(%d)Stereo\n",i);
+        }
+
         int channel = 0;
         int numSamples = audio.getNumSamplesPerChannel();
+        int numChannels = audio.getNumChannels();
         int endSample = startSample + numSamples;
-
+        
         while(bufferSize < endSample)
         {
             int oldBufferSize = bufferSize;
             bufferSize *= 2;
-            float* newBuffer = new float[bufferSize];
+            float* newBuffer[2] = {new float[bufferSize],new float[bufferSize]};
             
             for(int j = 0; j < oldBufferSize; j++)
             {
-                newBuffer[j] = buffer[j];
+             newBuffer[0][j]=buffer[0][j];
+             newBuffer[1][j]=buffer[1][j];
+
             }
             std::printf("Resizing buffer from %d to %d\n", oldBufferSize, bufferSize);
             memset(newBuffer + oldBufferSize, 0, (bufferSize - oldBufferSize)*sizeof(float));
             
-            delete[] buffer;
-            
-            buffer = newBuffer;
+            delete[] buffer[0];
+            delete[] buffer[1];
+            buffer[0] = newBuffer[0];
+            buffer[1] = newBuffer[1];
         
         }
 
 
+
+        for(channel = 0; channel < numChannels; channel++)
+        {
         for (int i = 0; i < numSamples ; i++)
         {
             double currentSample = audio.samples[channel][i];
 
-            buffer[startSample + i] += changeVolume(currentSample, volume);
+            buffer[channel][startSample + i] += changeVolume(currentSample, volume);
         }
+    }
     }
     //now resize buffer to the actual size
     for(int i = bufferSize-1; i >= 0; i--)
     {
-        if(buffer[i]!= 0)
+        if(buffer[0][i]!= 0 || buffer[1][i]!= 0)
         {
             break;
         }
@@ -213,11 +229,12 @@ int main(int argc, char* argv[])
     AudioFile<float>::AudioBuffer audioBuffer;
     
     int numSamples = bufferSize;
-    int numChannels = 1;
+    int numChannels = 2;
     audioBuffer.resize(numChannels);
     for(int i = 0; i < numSamples; i++)
     {
-        audioBuffer[0].push_back(buffer[i]);
+        audioBuffer[0].push_back(buffer[0][i]);
+        audioBuffer[1].push_back(buffer[1][i]);
     }
     AudioFile<float> Result;
     bool success = Result.setAudioBuffer(audioBuffer);
@@ -230,6 +247,7 @@ int main(int argc, char* argv[])
 
     // the OS will automatically free the memory when the program exits.
     delete[] audioFiles;
-    delete[] buffer;
+    delete[] buffer[0];
+    delete[] buffer[1];
     
 }
