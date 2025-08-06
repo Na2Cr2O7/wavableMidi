@@ -61,7 +61,9 @@ options:
   -N, --NoCache         disable cache | 禁用缓存到RAM功能
   -C, --anotherway      another way(wavCompositor) to process the audio (-N will be enabled while -s will be 44100
                         forever) | 使用另一种音频处理方式(wavCompositor)（启用此选项会自动禁用缓存，并固定采样率为 44100）
-
+  -wv, --withVideo WITHVIDEO
+                        create video file (if enabled ,wavfile will be from video file(ffmepg -i <--withVideo>
+                        input0.wav)) | 附加视频文件
 ```
 
 ## 🧪 示例命令
@@ -72,6 +74,9 @@ python SeparateVoice.py -i thomas.mid -w piano01.wav -o thomas.wav -C
 
 # 使用 MIDI 第 1 轨，设置采样率为 44100，基准音高为 C4（60）
 python SeparateVoice.py -i thomas.mid -w piano01.wav -o thomas.wav -t 1 -s 44100 -B 60
+
+# 输入视频
+SeparateVoice.py -i test.mid -wv 60.mp4 -o w.mp4 -C -t 0
 ```
 
 ---
@@ -114,4 +119,5 @@ thomas.mid来自网络。
 AudioFile.h 来自 [https://github.com/adamstark/AudioFile](https://github.com/adamstark/AudioFile) 在MIT许可证下授权。
 
 (虽然没有用到)CwriteWav.c 来自 [https://github.com/lyc18/C-CPP-read-write-WAV](https://github.com/lyc18/C-CPP-read-write-WAV) 在MIT许可证下授权。
+
 
