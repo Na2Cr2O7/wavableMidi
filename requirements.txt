@@ -2,3 +2,5 @@ moviepy>=2.0.0
 mido
 librosa
 soundfile
+opencv-python
+numpy

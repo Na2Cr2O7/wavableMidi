@@ -107,8 +107,9 @@ int main(int argc, char** argv)
     // int sampleRate = audioFile.getSampleRate();
     // audioFile.setSampleRate(static_cast<int>(sampleRate * halfNotes(halfNote)));
     // audioFile.save(outputfile);
-
-     int sampleRate = audioFile.getSampleRate();
+    int sampleRate = audioFile.getSampleRate();
+    if(audioFile.isMono())
+{   
      std::vector<float> audioData = audioFile.samples[0];
      int newSampleRate=static_cast<int>(sampleRate * halfNotes(halfNote));
      //std::cout << "new sample rate: " << newSampleRate << std::endl;
@@ -117,6 +118,23 @@ int main(int argc, char** argv)
 
      audioFile.samples[0] = newAudioData;
     audioFile.save(outputfile);
+    return 0;
+}
+else
+{
+    std::printf("Stereo");
+    std::vector<float> audioData0 = audioFile.samples[0];
+    std::vector<float> audioData1 = audioFile.samples[1];
+    int newSampleRate = static_cast<int>(sampleRate * halfNotes(halfNote));
+    //std::cout << "new sample rate: " << newSampleRate << std::endl;
+
+    std::vector<float> newAudioData0 = resampleAudio(audioData0, newSampleRate, sampleRate);
+    std::vector<float> newAudioData1 = resampleAudio(audioData1, newSampleRate, sampleRate);
+
+    audioFile.samples[0] = newAudioData0;
+    audioFile.samples[1] = newAudioData1;
+    audioFile.save(outputfile);
+}
 
     return 0;
 }

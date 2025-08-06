@@ -84,6 +84,7 @@ int main(int argc, char* argv[])
     std::vector<std::string> newArgv;
     char buf;
     char buf2[260]; //maybe it is enough.
+    memset(buf2, 0, 260);
     int index = 0;
     while (file.get(buf))
     {
