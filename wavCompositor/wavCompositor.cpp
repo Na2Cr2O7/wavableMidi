@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
 
     std::cout << "audioCount: " << audioCount << std::endl;
     //AudioFile<float>::AudioBuffer buffer;
-    int bufferSize = SAMPLE_RATE * 100;
+    int bufferSize = SAMPLE_RATE * 1;
 
 
     // combine audio files into one audio file
@@ -202,7 +202,9 @@ int main(int argc, char* argv[])
 
             }
             std::printf("Resizing buffer from %d to %d\n", oldBufferSize, bufferSize);
-            memset(newBuffer + oldBufferSize, 0, (bufferSize - oldBufferSize) * sizeof(float));
+
+            memset(newBuffer[0] + oldBufferSize, 0, (bufferSize - oldBufferSize) * sizeof(float));
+            memset(newBuffer[1] + oldBufferSize, 0, (bufferSize - oldBufferSize) * sizeof(float));
 
             delete[] buffer[0];
             delete[] buffer[1];

@@ -1,5 +1,5 @@
 import argparse
-pa = argparse.ArgumentParser('quickwindsonglyre')
+pa = argparse.ArgumentParser('wavableMidi')
 
 # 英文: input midi file
 # 中文: 输入的 MIDI 文件路径
@@ -50,7 +50,9 @@ pa.add_argument('-C','--anotherway',
                 action='store_true', 
                 default=False)
 
+# pa.add_argument('-N','--no-cleaning',)
 group.add_argument('-wv','--withVideo',type=str,help='create video file (if enabled ,wavfile will be from video file(ffmepg -i <--withVideo> input0.wav)) | 附加视频文件',default=False)
+
 
 
 if __name__ == '__main__':
@@ -116,6 +118,7 @@ def separateVoice(midiFile:str,wavFile:str,outputFileName:str,sampleRate:int=441
         audio=AudioFileClip(withVideo)
         wavFile='input0.wav'
         audio.fps=sampleRate
+        print(Fore.CYAN,f'splitting video file to {wavFile}',Fore.RESET)
         audio.write_audiofile(wavFile)
         newoutputFileName=videoFileNameLegalty(outputFileName)
         outputFileName='temp_.wav'
@@ -158,11 +161,13 @@ def separateVoice(midiFile:str,wavFile:str,outputFileName:str,sampleRate:int=441
         r=subprocess.call(f'wavCompositor.exe f.txt -o {outputFileName}',shell=True)
         if r!=0:
             print(Fore.RED,f'Error while running wavCompositor.exe (Maybe you sholdn\'t use -C option){Fore.RESET}')
-    elif way==2:
+    else:
     
         result=CompositeAudioClip(audioList)
         result.fps=sampleRate
         result.write_audiofile(outputFileName)
+
+
     if withVideo:
         
         frames=[]      
@@ -175,7 +180,10 @@ def separateVoice(midiFile:str,wavFile:str,outputFileName:str,sampleRate:int=441
         frames=['X' for i in range(int(l.duration*fps))]
         for i in midiNotes.getNotesStartTimesAndVolumes(midiFile,midiTrack):
             startTimeinSeconds, note, velocity=i
-            frames[int(startTimeinSeconds*fps)]=0
+            try:
+                frames[int(startTimeinSeconds*fps)]=0
+            except IndexError:
+                pass
         
         videoWriter=cv2.VideoWriter('tempVideo.mp4',cv2.VideoWriter_fourcc(*'mp4v'),fps, frameSize)
 
@@ -195,13 +203,14 @@ def separateVoice(midiFile:str,wavFile:str,outputFileName:str,sampleRate:int=441
             videoWriter.write(frame)
         videoWriter.release()
         garbageList.append('tempVideo.mp4')
-        subprocess.call(f'ffmpeg -i tempVideo.mp4 -i "{outputFileName}"  "{newoutputFileName}" -y',shell=True)
+        garbageList.append('temp_.wav')
+        subprocess.call(f'ffmpeg -i "{outputFileName}" -i tempVideo.mp4  "{newoutputFileName}" -y',shell=True)
 
 
 
 if __name__ == '__main__':
     if not args.NoCache and not args.anotherway:
-        print(Fore.CYAN,'Caching into RAM.')
+        print(Fore.CYAN,'Caching into ROM.')
     if args.anotherway:
         print(Fore.GREEN,'Using wavCompositor program')
     separateVoice(args.input,args.wavfile,args.output,args.sampleRate,args.midiTrack,args.baseNote,args.NoCache,args.anotherway,args.withVideo)
