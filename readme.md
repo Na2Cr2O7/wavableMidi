@@ -11,6 +11,12 @@
 
 ```bash
 pip install -r requirements.txt
+
+```
+编译GUI
+```bash
+cd wavablemidigui
+flutter build windows
 ```
 
 ## 💻 运行环境支持
@@ -33,6 +39,9 @@ g++ wavCompositor.cpp -o wavCompositor
 ---
 
 ## 🚀 使用方法
+
+GUI
+```wavablemidi.exe```
 
 ### 命令帮助信息
 
@@ -119,5 +128,6 @@ thomas.mid来自网络。
 AudioFile.h 来自 [https://github.com/adamstark/AudioFile](https://github.com/adamstark/AudioFile) 在MIT许可证下授权。
 
 (虽然没有用到)CwriteWav.c 来自 [https://github.com/lyc18/C-CPP-read-write-WAV](https://github.com/lyc18/C-CPP-read-write-WAV) 在MIT许可证下授权。
+
 
 
